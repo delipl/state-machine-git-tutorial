@@ -1,4 +1,4 @@
-#include "pin_controls.h"
+#include "pin_controls.hpp"
 
 void setup()
 {
@@ -24,8 +24,8 @@ void loop()
 		{
 			on_off_button_state = reading;
 			if (on_off_button_state == HIGH)
-			{ 
-					turn_on_off();
+			{
+				state = state ? DISABLED : LEDR;
 			}
 		}
 	}
@@ -43,7 +43,12 @@ void loop()
 			mode_button_state = reading;
 			if (mode_button_state == HIGH)
 			{ 
-					change_mode();
+				turn_off_color();
+				state = state ? static_cast<States>(state + 1) : DISABLED;
+				if (state >= UNKNOW)
+				{
+					state = LEDR;
+				}
 			}
 		}
 	}
@@ -62,6 +67,9 @@ void loop()
 			break;
 		case DISCO:
 			disco();
+			break;
+		default:
+			turn_off_color();
 			break;
 	}
 }

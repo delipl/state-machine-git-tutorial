@@ -1,6 +1,4 @@
-#ifndef __PINS_H__
-#define __PINS_H__
-
+#pragma once
 #include "Arduino.h"
 
 const int on_off_button = 4;
@@ -24,9 +22,8 @@ enum States
 	LEDR,
 	LEDG,
 	LEDB,
-	DISCO
+	DISCO,
+	UNKNOW
 };
 
 States state;
-
-#endif // __PINS_H__
