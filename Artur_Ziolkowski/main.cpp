@@ -96,18 +96,16 @@ void button2_service()
 }
 void disco()
 {
-  int r = 0;
-  int g = 0;
-  int b = 0;
-  int del = 10;
-  while(state == DISCO){
-    r = (r + 7) % 255;
-    g = (g + 13) % 255;
-    b = (b + 11) % 255;
-    del = (del + 3) % 23;
+  int r = 45;
+  int g = 179;
+  int b = 78;
+  for(int i = 0; i < 6; ++i){
+    r = (r + 83) % 255;
+    g = (g + 91) % 255;
+    b = (b + 57) % 255;
     analogWrite(redled, r);
     analogWrite(blueled, g);
     analogWrite(greenled, b);
-    delay(del);
+    delay(50);
   }
 }
