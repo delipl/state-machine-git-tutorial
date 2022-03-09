@@ -25,7 +25,7 @@ void loop()
 			on_off_button_state = reading;
 			if (on_off_button_state == HIGH)
 			{
-				state = state ? DISABLED : LEDR;
+				state = state == DISABLED ? LEDR : DISABLED;
 			}
 		}
 	}
@@ -43,17 +43,15 @@ void loop()
 			mode_button_state = reading;
 			if (mode_button_state == HIGH)
 			{ 
-				turn_off_color();
-				state = state ? static_cast<States>(state + 1) : DISABLED;
-				if (state >= UNKNOW)
-				{
-					state = LEDR;
-				}
+				
+				state = state == DISABLED ? DISABLED
+					: (states + 1 > DISCO ? LEDR : static_cast<States>(state + 1));
 			}
 		}
 	}
 	last_mode_button_state = reading;
-	
+
+	turn_off_color();
 	switch(state)
 	{
 		case LEDR:

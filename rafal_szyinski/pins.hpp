@@ -18,12 +18,10 @@ const int green_pin = 3;
 
 enum States
 {
+	UNKNOWN,
 	DISABLED,
 	LEDR,
 	LEDG,
 	LEDB,
 	DISCO,
-	UNKNOW
-};
-
-States state;
+} state;
