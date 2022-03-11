@@ -29,15 +29,18 @@ enum class StateStatus {
 
 class State {
    public:
-    State(const std::string &name, const std::function<StateStatus()> main, const std::function<StateStatus()> on_enter = nullptr, const std::function<StateStatus()> on_exit = nullptr, const std::function<StateStatus()> on_error = nullptr);
+    State(const std::size_t id, const std::string& name);
     StateStatus operator()();
+    size_t get_next_state_id() const;
 
    private:
+    const std::size_t id;
     const std::string name;
-    std::function<StateStatus()> main;
-    std::function<StateStatus()> on_enter;
-    std::function<StateStatus()> on_exit;
-    std::function<StateStatus()> on_error;
+    virtual StateStatus main() = 0;
+    virtual StateStatus on_enter();
+    virtual StateStatus on_error();
+    virtual StateStatus on_exit();
+    size_t next_state_id = 0;
     StateStatus status;
 };
 }  // namespace dart_plus

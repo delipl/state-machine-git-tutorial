@@ -1,8 +1,21 @@
 #include "state.hpp"
 namespace dart_plus {
-State::State(const std::string &name, const std::function<StateStatus()> main, const std::function<StateStatus()> on_enter, const std::function<StateStatus()> on_exit, const std::function<StateStatus()> on_error)
-    : name{name}, main{main}, on_enter{on_enter}, on_exit{on_exit}, on_error{on_error}{
-    status = on_enter == nullptr ? StateStatus::main : StateStatus::enter;
+State::State(const std::size_t id, const std::string& name)
+    : id{id}, name{name} {}
+
+StateStatus State::on_enter() {
+    throw std::runtime_error("[StateStatus] The enter handler does not exists. Try to make on_enter() function.");
+    return StateStatus::unknown;
+}
+
+StateStatus State::on_error() {
+    throw std::runtime_error("[StateStatus] The error handler does not exists. Try to make on_error() function.");
+    return StateStatus::unknown;
+}
+
+StateStatus State::on_exit() {
+    throw std::runtime_error("[StateStatus] The exit handler does not exists. Try to make on_exit() function.");
+    return StateStatus::unknown;
 }
 
 StateStatus State::operator()() {
@@ -12,24 +25,15 @@ StateStatus State::operator()() {
                 throw std::runtime_error("[StateStatus] Unknown StateStatus!!!");
                 break;
             case StateStatus::enter:
-                if (on_enter == nullptr) {
-                    throw std::runtime_error("[StateStatus] The enter handler does not exists. Try to make on_enter() function.");
-                } 
                 status = on_enter();
                 break;
             case StateStatus::main:
                 status = main();
                 break;
             case StateStatus::exit:
-                if (on_exit == nullptr) {
-                    throw std::runtime_error("[StateStatus] The exit handler does not exists. Try to make on_exit() function.");
-                }
                 status = on_exit();
                 break;
             case StateStatus::error:
-                if (on_error == nullptr) {
-                    throw std::runtime_error("[StateStatus] The error handler does not exists. Try to make on_error() function.");
-                }
                 status = on_error();
                 break;
             default:
@@ -41,4 +45,8 @@ StateStatus State::operator()() {
     }
     return status;
 };
+
+size_t State::get_next_state_id() const{
+    return next_state_id;
+}
 }  // namespace dart_plus
